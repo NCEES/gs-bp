@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+echo "-----> Installing Ghostscript 9.16"
+
+BUILD_DIR=$1
+PACKAGE="https://s3.amazonaws.com/public-ncees-org/buildpacks/ghostscript/ghostscript.tgz"
+LOCATION="$BUILD_DIR/vendor/gs"
+
+mkdir -p $LOCATION
+curl $PACKAGE -s -o - | tar xzf - -C $LOCATION
+
+echo "-----> Building runtime environment for Ghostscript"
+
+mkdir -p $BUILD_DIR/.profile.d
+echo "export PATH=\"\$HOME/vendor/gs/bin:\$PATH\"" > $BUILD_DIR/.profile.d/ghostscript.sh
